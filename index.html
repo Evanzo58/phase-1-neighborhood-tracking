@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neighborhood Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Neighborhood Tracker</h1>
+        <nav>
+            <ul>
+                <li><a href="#crime-reports">Crime Reports</a></li>
+                <li><a href="#events">Local Events</a></li>
+                <li><a href="#map">Neighborhood Map</a></li>
+                <li><a href="#forum">Discussion Forum</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="crime-reports">
+        <h2>Crime Reports</h2>
+        <p>Stay updated on recent crime reports in your area.</p>
+        <ul id="crime-list"></ul>
+        <button onclick="reportCrime()">Report a Crime</button>
+    </section>
+
+    <section id="events">
+        <h2>Local Events</h2>
+        <p>Upcoming neighborhood events and meetings.</p>
+        <ul>
+            <li><strong>March 30:</strong> Community Cleanup Drive</li>
+            <li><strong>April 5:</strong> Neighborhood Meeting</li>
+        </ul>
+    </section>
+
+    <section id="map">
+        <h2>Neighborhood Map</h2>
+        <p>View locations of recent reports and community hotspots.</p>
+        <iframe src="https://www.google.com/maps/embed" width="100%" height="300"></iframe>
+    </section>
+
+    <section id="forum">
+        <h2>Discussion Forum</h2>
+        <textarea id="forum-message" placeholder="Share updates or concerns..."></textarea>
+        <button onclick="postForumMessage()">Post</button>
+        <div id="forum-posts"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Neighborhood Tracker</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCrimeReports();
+            loadForumPosts();
+        });
+
+        function reportCrime() {
+            let crimeDescription = prompt("Enter details about the crime:");
+            if (crimeDescription && crimeDescription.trim() !== "") {
+                let crimeReports = JSON.parse(localStorage.getItem("crimeReports")) || [];
+                let newReport = {
+                    date: new Date().toLocaleDateString(),
+                    description: crimeDescription.trim()
+                };
+                crimeReports.unshift(newReport);
+                localStorage.setItem("crimeReports", JSON.stringify(crimeReports));
+                loadCrimeReports();
+            } else {
+                alert("Crime description cannot be empty.");
+            }
+        }
+
+        function deleteCrimeReport(index) {
+            let crimeReports = JSON.parse(localStorage.getItem("crimeReports")) || [];
+            crimeReports.splice(index, 1);
+            localStorage.setItem("crimeReports", JSON.stringify(crimeReports));
+            loadCrimeReports();
+        }
+
+        function loadCrimeReports() {
+            let reportsContainer = document.getElementById("crime-list");
+            let crimeReports = JSON.parse(localStorage.getItem("crimeReports")) || [];
+
+            reportsContainer.innerHTML = "";
+            crimeReports.forEach((report, index) => {
+                let listItem = document.createElement("li");
+                let strongTag = document.createElement("strong");
+                strongTag.textContent = `${report.date}: `;
+                
+                let textNode = document.createTextNode(report.description);
+                let deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.style.marginLeft = "10px";
+                deleteButton.onclick = () => deleteCrimeReport(index);
+
+                listItem.appendChild(strongTag);
+                listItem.appendChild(textNode);
+                listItem.appendChild(deleteButton);
+                reportsContainer.appendChild(listItem);
+            });
+        }
+
+        function postForumMessage() {
+            let messageBox = document.getElementById("forum-message");
+            let messageText = messageBox.value.trim();
+            
+            if (messageText !== "") {
+                let forumPosts = JSON.parse(localStorage.getItem("forumPosts")) || [];
+                let newPost = {
+                    date: new Date().toLocaleTimeString(),
+                    message: messageText
+                };
+
+                forumPosts.unshift(newPost);
+                localStorage.setItem("forumPosts", JSON.stringify(forumPosts));
+                messageBox.value = "";
+                loadForumPosts();
+            } else {
+                alert("Forum message cannot be empty.");
+            }
+        }
+
+        function deleteForumPost(index) {
+            let forumPosts = JSON.parse(localStorage.getItem("forumPosts")) || [];
+            forumPosts.splice(index, 1);
+            localStorage.setItem("forumPosts", JSON.stringify(forumPosts));
+            loadForumPosts();
+        }
+
+        function loadForumPosts() {
+            let forumContainer = document.getElementById("forum-posts");
+            let forumPosts = JSON.parse(localStorage.getItem("forumPosts")) || [];
+
+            forumContainer.innerHTML = "";
+            forumPosts.forEach((post, index) => {
+                let postItem = document.createElement("div");
+                postItem.classList.add("forum-post");
+
+                let strongTag = document.createElement("strong");
+                strongTag.textContent = `${post.date}: `;
+
+                let textNode = document.createTextNode(post.message);
+                let deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.style.marginLeft = "10px";
+                deleteButton.onclick = () => deleteForumPost(index);
+
+                postItem.appendChild(strongTag);
+                postItem.appendChild(textNode);
+                postItem.appendChild(deleteButton);
+                forumContainer.appendChild(postItem);
+            });
+        }
+    </script>
+
+</body>
+</html>
