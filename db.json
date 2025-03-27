@@ -1,0 +1,27 @@
+{
+    "crimeReports": [
+      {
+        "id": 1,
+        "date": "2025-03-27T14:30:00.000Z",
+        "description": "Suspicious activity near the park."
+      },
+      {
+        "id": 2,
+        "date": "2025-03-26T18:45:00.000Z",
+        "description": "Car break-in reported on Main Street."
+      }
+    ],
+    "forumPosts": [
+      {
+        "id": 1,
+        "date": "2025-03-27T15:00:00.000Z",
+        "message": "Stay safe everyone! Report any crime you see."
+      },
+      {
+        "id": 2,
+        "date": "2025-03-26T20:15:00.000Z",
+        "message": "Does anyone have updates on last night’s robbery?"
+      }
+    ]
+  }
+  
