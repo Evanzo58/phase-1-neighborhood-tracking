@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const API_URL = "http://localhost:5000";
 
-// Report a crime and send it to the backend
+
 async function reportCrime() {
     let crimeDescription = prompt("Enter details about the crime:");
 
@@ -35,7 +35,7 @@ async function reportCrime() {
     }
 }
 
-// Load and display crime reports from backend
+
 async function loadCrimeReports() {
     let reportsContainer = document.getElementById("crime-list");
 
@@ -60,7 +60,7 @@ async function loadCrimeReports() {
     }
 }
 
-// Post a forum message and send it to the backend
+
 async function postForumMessage() {
     let messageBox = document.getElementById("forum-message");
     let messageText = messageBox.value.trim();
@@ -92,7 +92,7 @@ async function postForumMessage() {
     }
 }
 
-// Load and display forum posts from backend
+
 async function loadForumPosts() {
     let forumContainer = document.getElementById("forum-posts");
 
